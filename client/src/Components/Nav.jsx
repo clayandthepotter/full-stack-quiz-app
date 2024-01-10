@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
-function HiddenNav({ show, handleHide, quizzes, currentQuizId, setCurrentQuizId}) {
+function HiddenNav({ show, handleHide, quizzes, currentQuiz, setCurrentQuiz}) {
 	// State to track hovered button
 	const [hoveredButton, setHoveredButton] = useState(null);
 
@@ -23,6 +23,11 @@ function HiddenNav({ show, handleHide, quizzes, currentQuizId, setCurrentQuizId}
 		fontWeight: 'bold'
 	};
 
+	const handleOnClick = (quiz) => {
+		setCurrentQuiz(quiz);
+		handleHide();
+	}
+
 	return (
 		<>
 			<Offcanvas show={show} onHide={handleHide}>
@@ -34,6 +39,7 @@ function HiddenNav({ show, handleHide, quizzes, currentQuizId, setCurrentQuizId}
 						{quizzes.map((quiz) => (
 							<li key={quiz.quiz_id}>
 								<button
+									value={quiz.quiz_id}
 									style={
 										hoveredButton === quiz.quiz_id
 											? hoverStyle
@@ -41,7 +47,7 @@ function HiddenNav({ show, handleHide, quizzes, currentQuizId, setCurrentQuizId}
 									}
 									onMouseEnter={() => setHoveredButton(quiz.quiz_id)}
 									onMouseLeave={() => setHoveredButton(null)}
-									onClick={() => setCurrentQuiz(quiz.quiz_id)}
+									onClick={() => handleOnClick(quiz)}
 								>
 									{quiz.topic}
 								</button>

@@ -604,3 +604,26 @@ ADD CONSTRAINT unique_username UNIQUE(username);
 
 ALTER TABLE users
 ADD CONSTRAINT unique_email UNIQUE(email);
+
+-- Alter choices table so that it contains a quiz_id COLUMN
+
+ALTER TABLE choices
+ADD COLUMN quiz_id INT;
+
+ALTER TABLE choices
+DROP COLUMN quiz_id;
+
+UPDATE choices
+SET quiz_id = 7
+WHERE question_id > 60 AND question_id < 71; 
+
+TABLE choices
+
+
+ALTER TABLE choices
+ADD CONSTRAINT fk_quizid
+FOREIGN KEY (quiz_id)
+REFERENCES quizzes(quiz_id);
+
+SELECT * FROM choices
+ORDER BY choice_id ASC;
