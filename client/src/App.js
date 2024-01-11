@@ -20,9 +20,7 @@ export default function App() {
 	const [choices, setChoices] = useState([]);
 	const [quizzes, setQuizzes] = useState([]);
 	const [currentQuiz, setCurrentQuiz] = useState([]);
-	const [currentQuizQuestions, setCurrentQuizQuestions] = useState([]);
-	const [answer, setAnswer] = useState([]);
-	const [isCorrect, setIsCorrect] = useState(null);
+
 
 	// get questions
 	useEffect(() => {
@@ -107,15 +105,16 @@ export default function App() {
 						currentQuiz={currentQuiz}
 						setCurrentQuiz={setCurrentQuiz}
 					/>
-					<div id='quiz'>{currentQuiz.topic}</div>
+					<div id='quiz'><h1 style={{fontSize:'60px'}}>{currentQuiz.topic}</h1></div>
 					<div id='description'>{quizDescription}</div>
 					<div id='accordionList'>
 						{questionsWithChoices.map((q) => (
-							<QuestionAccordion
+							<QuestionAccordion								
 								questionId={q.question_id}
 								questionText={q.question_text}
 								questionChoices={q.choices}
-								answer={answer}
+								quizQuestions={quizQuestions}
+								currentQuiz={currentQuiz}
 							/>
 						))}
 					</div>
@@ -143,43 +142,46 @@ export default function App() {
 				</main>
 			) : (
 				<main id='main'>
-					<HiddenNav
-						show={show}
-						handleHide={handleHide}
-						quizzes={quizzes}
-						currentQuiz={currentQuiz}
-						setCurrentQuiz={setCurrentQuiz}
-					/>
-					<h1
-						style={{
-							textAlign: 'center',
-							marginBottom: '40px',
-							marginTop: '20px',
-							fontWeight: 'bold',
-						}}
-					>
-						Welcome to BrainFood!
-					</h1>
-					<strong>
-						<p>
-							A full stack, interactive, multiple choice quiz app
-							built to test your knowledge on coding fundamentals of
-							topics like Javascript, React, SQL, and several more.
-						</p>
-					</strong>
-					<br />
-					<p>BrainFood was built using the PERN stack.</p>
-					<strong>
-						<p>PostgreSQL, Express, React, and Node.</p>
-					</strong>
-					<br />
-					<p>
-						BrainFood is an open soource project started by Clayton
-						Prickett and the codebase can be found by following this{' '}
-						<a href='https://github.com/clayandthepotter/full-stack-quiz-app'>
-							link.
-						</a>{' '}
-					To get started, just click the hamburger menu on the top left of your screen, select a quiz topic, and begin!</p>
+					<div style={{height:'100vh'}}>
+						<HiddenNav
+							show={show}
+							handleHide={handleHide}
+							quizzes={quizzes}
+							currentQuiz={currentQuiz}
+							setCurrentQuiz={setCurrentQuiz}
+						/>
+						<h1
+							style={{
+								textAlign: 'center',
+								marginBottom: '40px',
+								marginTop: '20px',
+								fontWeight: 'bold',
+								fontSize:'50px'
+							}}
+						>
+							Welcome to BrainFood!
+						</h1>
+						<strong>
+							<p style={{fontSize:'26px'}}>
+								A full stack, interactive, multiple choice quiz app
+								built to test your knowledge on coding fundamentals of
+								topics like Javascript, React, SQL, and several more.
+							</p>
+						</strong>
+						<br />
+						<p style={{fontSize:'26px'}}>BrainFood was built using the PERN stack.</p>
+						<strong>
+							<p style={{fontSize:'26px'}}>PostgreSQL, Express, React, and Node.</p>
+						</strong>
+						<br />
+						<p style={{fontSize:'26px'}}>
+							BrainFood is an open source project started by Clayton
+							Prickett and the codebase can be found by following this{' '}
+							<a href='https://github.com/clayandthepotter/full-stack-quiz-app'>
+								link.
+							</a>{' '}
+						To get started, just click the hamburger menu on the top left of your screen, select a quiz topic, and begin!</p>
+					</div>
 				</main>
 			)}
 		</div>
