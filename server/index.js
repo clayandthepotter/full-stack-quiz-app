@@ -22,6 +22,7 @@ const pool = new Pool({
   port: 5432
 });
 
+
 // middleware for user authentication
 const authenticateToken = (req, res, next) => {
   // get the token from the authorization header
@@ -36,6 +37,7 @@ const authenticateToken = (req, res, next) => {
     next();
   })
 }; 
+
 
 // Get all questions
 app.get('/questions', (req, res) => {
@@ -70,6 +72,18 @@ app.get('/quizzes', (req, res) => {
     });
 });
 
+// Get all users
+app.get('/users', (req, res) => {
+		const sql = 'SELECT * FROM users';
+		pool.query(sql, (error, results) => {
+      if (error) {
+				return res.status(500).send(error);
+			}
+			res.json(results.rows);
+    });
+});
+
+
 // post request handler for new user
 app.post('/register', async (req, res) => {
   // extracting the username and password from the body of the request object using destructuring
@@ -77,9 +91,9 @@ app.post('/register', async (req, res) => {
     // use bcrypt to create an encrypted hash of the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // insert the username and password into the registration database
+    // insert the username and password into the users table
     try {
-      // query the database to insert into the registration table
+      // query the database to insert into the users table
       await pool.query(`INSERT INTO users (username, email, password) VALUES ($1, $2, $3)`, [username, email, hashedPassword]);
       res.status(201).send('User successfully registered');
     } catch (error) {
@@ -90,25 +104,25 @@ app.post('/register', async (req, res) => {
 
 // post request handler for login
 app.post('/login', async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  // query the database to find the username
+  // query the database to find the email
   try {
-    const { rows } = await pool.query(`SELECT * FROM users WHERE username = $1`, [username]); // get row with mathing username, if it exists
-    if (rows.length > 0) { // user with given username exists within table
+    const { rows } = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]); // get row with matching email, if it exists
+    if (rows.length > 0) { // user with given email exists within table
       // check if password matches
       const passwordIsValid = await bcrypt.compare(password, rows[0].password);
-
+      // if password is valid
       if (passwordIsValid) {
         // create a json web token
         const token = jwt.sign(
-          { username }, 
+          { email }, 
           process.env.JWT_SECRET, 
           { expiresIn: '1h' }
         );
-        res.json({token});
+        res.json({token: token, username: rows[0].username});
       } else {
-        // if username/password not valid
+        // if email/password not valid
         res.status(403).send('Invalid password');
       }
     } else {

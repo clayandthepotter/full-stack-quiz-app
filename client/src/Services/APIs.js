@@ -6,10 +6,10 @@ const BASE_URL = 'http://localhost:3001'
 export const fetchQuestions = async () => {
 	try {
 		const response = await axios.get(`${BASE_URL}/questions`);
-    console.log(response.data);
+    // console.log(response.data);
 		return response.data;
 	} catch (error) {
-		console.log(error);
+		// console.log(error);
 	}
 };
 
@@ -17,10 +17,10 @@ export const fetchQuestions = async () => {
 export const fetchChoices = async () => {
 	try {
 		const response = await axios.get(`${BASE_URL}/choices`);
-    console.log(response.data);
+    // console.log(response.data);
 		return response.data;
 	} catch (error) {
-		console.log(error);
+		// console.log(error);
 	}
 };
 
@@ -28,11 +28,34 @@ export const fetchChoices = async () => {
 export const fetchQuizzes = async () => {
 	try {
 		const response = await axios.get(`${BASE_URL}/quizzes`);
-    console.log(response.data);
+    // console.log(response.data);
 		return response.data;
 	} catch (error) {
-		console.log(error);
+		// console.log(error);
 	}
 };
+
+// fetch users from database server
+export const fetchUsers = async () => {
+	try {
+		const response = await axios.get(`${BASE_URL}/users`);
+    // console.log(response.data);
+		return response.data;
+	} catch (error) {
+		// console.log(error);
+	}
+};
+
+// fetch login
+export const fetchLogin = async () => {
+	try {
+		const response = await axios.get(`${BASE_URL}/login`);
+    // console.log(response.data);
+		return response.data;
+	} catch (error) {
+		// console.log(error);
+	}
+};
+
 
 

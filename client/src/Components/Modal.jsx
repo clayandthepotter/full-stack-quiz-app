@@ -10,6 +10,30 @@ const CompareYourAnswer = ({ choiceSelected, isAnswer, isCorrect }) => {
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
 
+	// const handleContinue = () => {
+	// 	// Close modal
+	// 	setShow(false);
+
+	// 	// Get index of current question
+	// 	const currentIndex = quizQuestions.findIndex(
+	// 		(q) => q.id === currentQuestion.id
+	// 	);
+
+	// 	// Close current accordion
+	// 	const currentAccordion = document.getElementById(
+	// 		`accordion-${currentIndex}`
+	// 	);
+	// 	currentAccordion.classList.remove('show');
+
+	// 	// Open next accordion
+	// 	const nextIndex = currentIndex + 1;
+	// 	if (nextIndex < quizQuestions.length) {
+	// 		const nextAccordion = document.getElementById(
+	// 			`accordion-${nextIndex}`
+	// 		);
+	// 		nextAccordion.classList.add('show');
+	// 	}
+	// };
 
 	return (
 		<>
@@ -18,12 +42,12 @@ const CompareYourAnswer = ({ choiceSelected, isAnswer, isCorrect }) => {
 			</Button>
 
 			<Modal show={show} onHide={handleClose}>
-				<Modal.Header closeButton>
+				<Modal.Header closeButton style={{background: '#eee'}}>
 					<Modal.Title>Answer</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<strong>
-						<p>You selected option {choiceSelected}:</p>
+						<p>You selected the option:</p>
 					</strong>
 					<p>"{isAnswer}"</p>
 					<br />
@@ -31,11 +55,16 @@ const CompareYourAnswer = ({ choiceSelected, isAnswer, isCorrect }) => {
 					<div>
 						{isCorrect === false ? (
 							<strong>
-								<p>That is Incorrect. Please try again.</p>
+								<p style={{ color: 'red', fontSize: '24px' }}>
+									That's Incorrect.
+								</p>
+								<p>Please try again.</p>
 							</strong>
 						) : (
 							<strong>
-								<p>Correct!</p>
+								<p style={{ color: 'green', fontSize: '24px' }}>
+									That's Correct!
+								</p>
 								<p>Continue to the next question.</p>
 							</strong>
 						)}
@@ -45,7 +74,7 @@ const CompareYourAnswer = ({ choiceSelected, isAnswer, isCorrect }) => {
 				<Modal.Footer>
 					{isCorrect === false ? (
 						<Button variant='primary' onClick={handleClose}>
-							Close
+							Try Again
 						</Button>
 					) : (
 						<Button variant='primary' onClick={handleClose}>

@@ -9,9 +9,12 @@ import {
 	fetchQuestions,
 	fetchChoices,
 	fetchQuizzes,
+	fetchUsers,
 } from './Services/APIs.js';
 import Button from 'react-bootstrap/Button';
-
+import LoginModal from './Components/LoginModal.jsx';
+import RegisterModal from './Components/RegisterModal.jsx';
+import { jwtDecode } from 'jwt-decode';
 
 export default function App() {
 	// initialize state variables
@@ -20,14 +23,20 @@ export default function App() {
 	const [choices, setChoices] = useState([]);
 	const [quizzes, setQuizzes] = useState([]);
 	const [currentQuiz, setCurrentQuiz] = useState([]);
-
+	const [username, setUsername] = useState('');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [token, setToken] = useState('');
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [currentUser, setCurrentUser] = useState('');
+	const [users, setUsers] = useState('');
 
 	// get questions
 	useEffect(() => {
 		const getQuestions = async () => {
 			const response = await fetchQuestions();
 			setQuestions(response);
-			console.log(questions);
+			// console.log(questions);
 		};
 		getQuestions();
 	}, []);
@@ -37,7 +46,7 @@ export default function App() {
 		const getChoices = async () => {
 			const response = await fetchChoices();
 			setChoices(response);
-			console.log(choices);
+			// console.log(choices);
 		};
 		getChoices();
 	}, []);
@@ -47,17 +56,49 @@ export default function App() {
 		const getQuizzes = async () => {
 			const response = await fetchQuizzes();
 			setQuizzes(response);
-			console.log(quizzes);
+			// console.log(quizzes);
 		};
 		getQuizzes();
 	}, []);
 
-	// filters for current quiz questions and choices 
-	const quizQuestions = questions.filter((q) => q.quiz_id === currentQuiz.quiz_id);
-	console.log(`quizQuestions`, quizQuestions);
+	// get users
+	useEffect(() => {
+		const getUsers = async () => {
+			const response = await fetchUsers();
+			setUsers(response);
+			// console.log(users);
+		};
+		getUsers();
+	}, []);
 
-	const quizChoices = choices.filter((c) => c.quiz_id === currentQuiz.quiz_id);
-	console.log(`quizChoices`, quizChoices);
+	// check if user is logged in
+	useEffect(() => {
+		const token = localStorage.getItem('token');
+		const username = localStorage.getItem('username');
+		if (token && typeof token === 'string') {
+			try {
+				const decoded = jwtDecode(token);
+				setCurrentUser(localStorage.getItem('username'));
+				setIsLoggedIn(true);
+				console.log(decoded, username);
+			} catch (error) {
+				console.error('Error decoding token:', error);
+				localStorage.removeItem('token');
+				localStorage.removeItem('username');
+			}
+		}
+	}, []);
+
+	// filters for current quiz questions and choices
+	const quizQuestions = questions.filter(
+		(q) => q.quiz_id === currentQuiz.quiz_id
+	);
+	// console.log(`quizQuestions`, quizQuestions);
+
+	const quizChoices = choices.filter(
+		(c) => c.quiz_id === currentQuiz.quiz_id
+	);
+	// console.log(`quizChoices`, quizChoices);
 
 	const questionsWithChoices = quizQuestions.map((question) => {
 		return {
@@ -68,14 +109,20 @@ export default function App() {
 		};
 	});
 
-	console.log(`questionsWithChoices`, questionsWithChoices)
+	// console.log(`questionsWithChoices`, questionsWithChoices);
 
 	// quiz description variable
 	const quizDescription = currentQuiz.description;
 
 	// handle show and hide
 	const handleHide = () => setShow(false);
-	const handleShow = () => setShow(true);
+	const handleShow = () => {
+		if (isLoggedIn) {
+			setShow(true);
+		} else {
+			alert('Please log in to access this content :)');
+		}
+	};
 
 	// handle next button click
 	const handleNextQuiz = () => {
@@ -94,7 +141,19 @@ export default function App() {
 	return (
 		<div id='app'>
 			<div id='header'>
-				<Header handleShow={handleShow} />
+				<Header
+					handleShow={handleShow}
+					setToken={setToken}
+					setIsLoggedIn={setIsLoggedIn}
+					setCurrentUser={setCurrentUser}
+					currentUser={currentUser}
+					email={email}
+					setEmail={setEmail}
+					password={password}
+					setPassword={setPassword}
+					token={token}
+					isLoggedIn={isLoggedIn}
+				/>
 			</div>
 			{currentQuiz.quiz_id > 0 ? (
 				<main id='main'>
@@ -104,12 +163,29 @@ export default function App() {
 						quizzes={quizzes}
 						currentQuiz={currentQuiz}
 						setCurrentQuiz={setCurrentQuiz}
+						isLoggedIn={isLoggedIn}
 					/>
-					<div id='quiz'><h1 style={{fontSize:'60px'}}>{currentQuiz.topic}</h1></div>
-					<div id='description'>{quizDescription}</div>
+					<div id='quiz'>
+						<h1 style={{ fontSize: '60px', fontWeight: '900' }}>
+							{currentQuiz.topic}
+						</h1>
+					</div>
+					<div
+						id='description'
+						style={{
+							maxWidth: '1000px',
+							margin: 'auto',
+							marginBottom: '50px',
+						}}
+					>
+						{quizDescription}
+						<hr />
+					</div>
+
 					<div id='accordionList'>
-						{questionsWithChoices.map((q) => (
-							<QuestionAccordion								
+						{questionsWithChoices.map((q, index) => (
+							<QuestionAccordion
+								index={index}
 								questionId={q.question_id}
 								questionText={q.question_text}
 								questionChoices={q.choices}
@@ -142,7 +218,7 @@ export default function App() {
 				</main>
 			) : (
 				<main id='main'>
-					<div style={{height:'100vh'}}>
+					<div style={{ height: '100vh', margin: 'auto' }}>
 						<HiddenNav
 							show={show}
 							handleHide={handleHide}
@@ -150,37 +226,78 @@ export default function App() {
 							currentQuiz={currentQuiz}
 							setCurrentQuiz={setCurrentQuiz}
 						/>
-						<h1
+						<div style={{ maxWidth: '800px', margin: 'auto' }}>
+							<h1
+								style={{
+									textAlign: 'center',
+									marginBottom: '40px',
+									marginTop: '20px',
+									fontWeight: '900',
+									fontSize: '50px',
+								}}
+							>
+								Welcome to BrainFood!
+							</h1>
+
+							<hr />
+							<strong>
+								<p style={{ fontSize: '26px', fontWeight: '700' }}>
+									A full stack, interactive, multiple choice quiz app
+									built to test your knowledge on coding fundamentals
+									of topics like Javascript, React, SQL, and more.
+								</p>
+							</strong>
+							<hr />
+
+							<p style={{ fontSize: '26px', fontWeight: '500' }}>
+								BrainFood was built using the PERN stack.
+							</p>
+							<strong>
+								<p style={{ fontSize: '26px', fontWeight: '700' }}>
+									PostgreSQL, Express, React, and Node.
+								</p>
+							</strong>
+							<br />
+							<p style={{ fontSize: '22px', fontWeight: '500' }}>
+								BrainFood is an open source project started by Clayton
+								Prickett.
+							</p>
+							<p style={{ fontSize: '22px', fontWeight: '500' }}>
+								If you would like to contribute or copy the project,
+								the codebase can be found by following this{' '}
+								<a href='https://github.com/clayandthepotter/full-stack-quiz-app'>
+									link.
+								</a>{' '}
+							</p>
+							<br />
+							<p style={{ fontSize: '22px', fontWeight: '500' }}>
+								To get started, register an account. This will also
+								log you in. Then simply click the menu icon in the top
+								left corner of your screen, select a quiz topic, and
+								begin!
+							</p>
+						</div>
+						<br />
+						<div
 							style={{
-								textAlign: 'center',
-								marginBottom: '40px',
-								marginTop: '20px',
-								fontWeight: 'bold',
-								fontSize:'50px'
+								display: 'flex',
+								justifyContent: 'center',
+								margin: 'auto',
 							}}
 						>
-							Welcome to BrainFood!
-						</h1>
-						<strong>
-							<p style={{fontSize:'26px'}}>
-								A full stack, interactive, multiple choice quiz app
-								built to test your knowledge on coding fundamentals of
-								topics like Javascript, React, SQL, and several more.
-							</p>
-						</strong>
-						<br />
-						<p style={{fontSize:'26px'}}>BrainFood was built using the PERN stack.</p>
-						<strong>
-							<p style={{fontSize:'26px'}}>PostgreSQL, Express, React, and Node.</p>
-						</strong>
-						<br />
-						<p style={{fontSize:'26px'}}>
-							BrainFood is an open source project started by Clayton
-							Prickett and the codebase can be found by following this{' '}
-							<a href='https://github.com/clayandthepotter/full-stack-quiz-app'>
-								link.
-							</a>{' '}
-						To get started, just click the hamburger menu on the top left of your screen, select a quiz topic, and begin!</p>
+							<RegisterModal
+								setUsername={setUsername}
+								setEmail={setEmail}
+								setPassword={setPassword}
+								setToken={setToken}
+								setIsLoggedIn={setIsLoggedIn}
+								setCurrentUser={setCurrentUser}
+								username={username}
+								email={email}
+								password={password}
+							/>
+							
+						</div>
 					</div>
 				</main>
 			)}

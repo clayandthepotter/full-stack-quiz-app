@@ -627,3 +627,5 @@ REFERENCES quizzes(quiz_id);
 
 SELECT * FROM choices
 ORDER BY choice_id ASC;
+
+TABLE users;
