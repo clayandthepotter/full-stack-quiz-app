@@ -78,8 +78,8 @@ const RegisterModal = ({
 		<>
 			<Button
 				variant='primary'
+				size='lg'
 				onClick={handleShow}
-				style={{ margin: '5px' }}
 			>
 				Register
 			</Button>
@@ -87,7 +87,7 @@ const RegisterModal = ({
 			<Modal show={show} onHide={handleClose}>
 				<Modal.Header closeButton>
 					<Modal.Title style={{ textAlign: 'center' }}>
-						Register
+						Create your account
 					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body style={{ background: '#eee' }}>
@@ -136,7 +136,7 @@ const RegisterModal = ({
 					</InputGroup>
 				</Modal.Body>
 				<Modal.Footer style={{ background: '#eee' }}>
-					<Button variant='primary' onClick={handleRegister}>
+					<Button size='lg' variant='primary' onClick={handleRegister}>
 						Register
 					</Button>
 				</Modal.Footer>

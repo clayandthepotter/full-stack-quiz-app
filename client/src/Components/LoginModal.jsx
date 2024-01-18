@@ -46,7 +46,7 @@ const LoginModal = ({
 				// console.log(`currentUser`, currentUser)
 				setIsLoggedIn((prevIsLoggedIn) => !prevIsLoggedIn);
 				// console.log(`isLoggedIn`, isLoggedIn);
-				alert('Login Successful!');
+				alert('Login Successful!\n\nWelcome back '+data.username);
 				handleClose();
 			} else {
 				alert('Login failed');
@@ -77,11 +77,11 @@ const LoginModal = ({
 		<>
 			{isLoggedIn === false ? (
 				<>
-					<Button variant='primary' size='lg' onClick={handleShow}>
+					<Button variant='secondary' onClick={handleShow}>
 						Login
 					</Button>
 					<Modal show={show} onHide={handleClose}>
-						<Modal.Header closeButton>
+						<Modal.Header closeButton style={{background: '#fff'}} >
 							<Modal.Title style={{ textAlign: 'center' }}>
 								Login
 							</Modal.Title>
@@ -111,7 +111,7 @@ const LoginModal = ({
 										autoComplete='current-password'
 										onChange={(e) => setPassword(e.target.value)}
 									/>
-									<Button
+									<Button variant='secondary'
 										onClick={() => setShowPassword(!showPassword)}
 									>
 										{showPassword === false ? 'Show' : 'Hide'}
@@ -120,30 +120,21 @@ const LoginModal = ({
 							</Form>
 						</Modal.Body>
 						<Modal.Footer style={{ background: '#eee' }}>
-							<Button variant='primary' onClick={handleLogin}>
+							<Button variant='secondary' onClick={handleLogin}>
 								Login
 							</Button>
 						</Modal.Footer>
 					</Modal>
 				</>
 			) : (
-				<div style={{ display: 'flex', alignContent: 'center' }}>
-					<p
-						style={{
-							fontWeight: '500',
-							fontSize: '26px',
-							marginRight: '20px',
-						}}
-					>
-						{currentUser}
-					</p>
+				
 					<Button
-						variant='outline-primary'
+						variant='secondary'
 						onClick={() => handleLogOut()}
 					>
 						Log Out
 					</Button>
-				</div>
+				
 			)}
 		</>
 	);

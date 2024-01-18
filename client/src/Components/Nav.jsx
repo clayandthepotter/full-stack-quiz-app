@@ -11,16 +11,24 @@ function HiddenNav({ show, handleHide, quizzes, isLoggedIn, setCurrentQuiz}) {
 		border: '0 none transparent',
 		marginBottom: '5px',
 		fontSize: '24px',
+		color: '#ccc',
 	};
 
 	const hoverStyle = {
 		...normalStyle,
-		background: '#f0f0f0', // Example hover background
-		color: '#333', // Example hover text color
+		color: '#333',
+		fontWeight: '700',
 		cursor: 'pointer',
-		borderRadius: '3px',
 		textDecoration: 'underline',
-		fontWeight: 'bold'
+		webkitTextFillColor: 'transparent',
+    backgrounCcolor: '#f3ec78',
+    backgroundImage: 'linear-gradient(45deg, #f3ec78, #af4261)',
+    backgroundSize: '100%',
+    backgroundClip: 'text',
+    webkitBackgroundClip: 'text',
+    mozBackgroundClip: 'text',
+    webkitTextFillColor: 'transparent', 
+    mozTextFillColor: 'transparent',
 	};
 
 	const handleOnClick = (quiz) => {
@@ -30,60 +38,69 @@ function HiddenNav({ show, handleHide, quizzes, isLoggedIn, setCurrentQuiz}) {
 
 	return (
 		<>
-			{isLoggedIn === false ? null :
-			(<Offcanvas show={show} onHide={handleHide}>
-				<Offcanvas.Header
-					style={{
-						background: '#d5d5d5',
-						boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.1)',
-					}}
-					closeButton
-				>
-					<Offcanvas.Title
+			{isLoggedIn === false ? null : (
+				<Offcanvas show={show} onHide={handleHide}>
+					<Offcanvas.Header
 						style={{
-							fontSize: '30px',
-							fontWeight: 'bold',
+							backgroundColor: 'rgb(190, 190, 190)',
+							backgroundImage:
+								'linear-gradient(45deg, #af426157, #f3ed785c)',
+							boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.1)',
+							height: '89px',
 						}}
+						closeButton
 					>
-						Quiz Topics
-					</Offcanvas.Title>
-				</Offcanvas.Header>
-				<Offcanvas.Body>
-					<ul style={{ listStyle: 'none' }}>
-						<br />
-						{quizzes.map((quiz) => (
-							<li key={quiz.quiz_id}>
-								<button
-									value={quiz.quiz_id}
-									style={
-										hoveredButton === quiz.quiz_id
-											? hoverStyle
-											: normalStyle
-									}
-									onMouseEnter={() => setHoveredButton(quiz.quiz_id)}
-									onMouseLeave={() => setHoveredButton(null)}
-									onClick={() => handleOnClick(quiz)}
-								>
-									{quiz.topic}
-								</button>
-							</li>
-						))}
-						<hr/>
-						<button
-							style={
-								hoveredButton === quizzes.quiz_id
-									? hoverStyle
-									: normalStyle
-							}
-							onMouseEnter={() => setHoveredButton(quizzes.quiz_id)}
-							onMouseLeave={() => setHoveredButton(null)}
-							onClick={() => window.location.reload()}
+						<Offcanvas.Title
+							style={{
+								fontSize: '40px',
+								fontWeight: '900',
+								color: '#120a24',
+							}}
 						>
-							Home
-						</button>
-					</ul>
-				</Offcanvas.Body>
-			</Offcanvas>
+							Quiz Topics
+						</Offcanvas.Title>
+					</Offcanvas.Header>
+					<Offcanvas.Body
+						className='swirlyBackground'
+						style={{ background: 'fff' }}
+					>
+						<ul style={{ listStyle: 'none' }}>
+							<br />
+							{quizzes.map((quiz) => (
+								<li key={quiz.quiz_id}>
+									<button
+										value={quiz.quiz_id}
+										style={
+											hoveredButton === quiz.quiz_id
+												? hoverStyle
+												: normalStyle
+										}
+										onMouseEnter={() =>
+											setHoveredButton(quiz.quiz_id)
+										}
+										onMouseLeave={() => setHoveredButton(null)}
+										onClick={() => handleOnClick(quiz)}
+									>
+										{quiz.topic}
+									</button>
+								</li>
+							))}
+							<hr style={{ background: 'white' }} />
+							<button
+								style={
+									hoveredButton === quizzes.quiz_id
+										? hoverStyle
+										: normalStyle
+								}
+								onMouseEnter={() => setHoveredButton(quizzes.quiz_id)}
+								onMouseLeave={() => setHoveredButton(null)}
+								onClick={() => window.location.reload()}
+							>
+								Home
+							</button>
+						</ul>
+					</Offcanvas.Body>
+				</Offcanvas>
 			)}
 		</>
 	);

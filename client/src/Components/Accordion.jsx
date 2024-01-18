@@ -14,22 +14,36 @@ function QuestionAccordion({questionText, questionChoices, index}) {
 
 
 	return (
-		<Accordion>
-			<Accordion.Item eventKey='0'>
-				<Accordion.Button style={{ background: '#eee' }}>
-					<h5 style={{ margin: 'auto 0px' }}>
+		<Accordion style={{ marginBottom: '15px' }}>
+			<Accordion.Item eventKey='0' className='swirlyBackground2'>
+				<Accordion.Button
+					style={{
+						background: 'rgb(221, 221, 221)',
+						borderColor: '#20022d',
+					}}
+				>
+					<h5
+						style={{
+							margin: 'auto 0px',
+							color: '#20022d',
+							fontWeight: '700',
+						}}
+					>
 						Question {number}
 					</h5>
 				</Accordion.Button>
-				<Accordion.Body style={{ backgroundColor: '#fff' }}>
+				<Accordion.Body
+					style={{ paddingLeft: '30px', paddingRight: '30px' }}
+				>
 					<div className='display-block my-4'>
-						<h3>{questionText}</h3>
-						<hr />
+						<h3 style={{ fontWeight: '700' }}>{questionText}</h3>
+						{/* <hr /> */}
 					</div>
 					<div className='display-inline my-4'>
 						<Form>
 							{questionChoices.map((choice) => (
 								<Form.Check
+									style={{ fontSize: '20px', color: '#20022d' }}
 									type='radio'
 									id={choice.choice_id}
 									label={choice.choice_text}
@@ -44,7 +58,7 @@ function QuestionAccordion({questionText, questionChoices, index}) {
 							))}
 						</Form>
 					</div>
-					<hr />
+					{/* <hr /> */}
 					<div
 						style={{ display: 'flex', flexDirection: 'row-reverse' }}
 					>

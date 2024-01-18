@@ -37,32 +37,47 @@ const CompareYourAnswer = ({ choiceSelected, isAnswer, isCorrect }) => {
 
 	return (
 		<>
-			<Button variant='primary' onClick={handleShow}>
+			<Button variant='secondary' onClick={handleShow}>
 				Check your answer
 			</Button>
 
-			<Modal show={show} onHide={handleClose}>
-				<Modal.Header closeButton style={{background: '#eee'}}>
-					<Modal.Title>Answer</Modal.Title>
+			<Modal
+				show={show}
+				onHide={handleClose}
+				style={{ fontFamily: 'Montserrat' }}
+			>
+				<Modal.Header closeButton style={{ background: '#eee' }}>
+					<Modal.Title
+						style={{ fontWeight: '700', color: '#20022d' }}
+					>
+						Answer
+					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
+					<br />
 					<strong>
-						<p>You selected the option:</p>
+						<p style={{ fontSize: '26px', color: '#20022d' }}>
+							You selected the option:
+						</p>
 					</strong>
 					<p>"{isAnswer}"</p>
 					<br />
+					<hr style={{ width: '60%', margin: 'auto' }} />
 					<br />
 					<div>
 						{isCorrect === false ? (
 							<strong>
-								<p style={{ color: 'red', fontSize: '24px' }}>
+								<p style={{ color: '#9d3978', fontSize: '24px' }}>
 									That's Incorrect.
 								</p>
 								<p>Please try again.</p>
 							</strong>
 						) : (
 							<strong>
-								<p style={{ color: 'green', fontSize: '24px' }}>
+								<p
+									className='gradientText'
+									style={{ fontSize: '24px' }}
+								>
 									That's Correct!
 								</p>
 								<p>Continue to the next question.</p>
@@ -73,11 +88,11 @@ const CompareYourAnswer = ({ choiceSelected, isAnswer, isCorrect }) => {
 				</Modal.Body>
 				<Modal.Footer>
 					{isCorrect === false ? (
-						<Button variant='primary' onClick={handleClose}>
+						<Button variant='secondary' onClick={handleClose}>
 							Try Again
 						</Button>
 					) : (
-						<Button variant='primary' onClick={handleClose}>
+						<Button variant='secondary' onClick={handleClose}>
 							Continue
 						</Button>
 					)}

@@ -16,28 +16,21 @@ const Header = ({
 	token,
 	isLoggedIn
 }) => {
-	const handleLogOut = () => {
-		// Clear the token
-		setToken(null);
-		// Update the logged-in state
-		setIsLoggedIn(false);
-		// clear current user data
-		setCurrentUser(null);
-		// clear localStorage
-		 localStorage.removeItem('token');
-		// redirect user to home page
-			window.location.href = '/';
-
-		// Display a message
-		alert('Logout successful!');
+	
+	const handleMouseEnter = (e) => {
+		e.target.style.cursor = 'pointer';
 	};
+
+	const handleMouseLeave = (e) => {
+		e.target.style.cursor = 'default'; // Or you can use '' to clear the inline style
+	};
+
 
 	return (
 		<header
 			style={{
-				display: 'grid',
-				gridTemplateColumns: '400px 300px 400px',
-				gap: 'auto',
+				display: 'flex',
+				flexDirection: 'row',
 				justifyContent: 'space-between',
 				width: '100%',
 				// paddingTop: '10px',
@@ -50,8 +43,8 @@ const Header = ({
 					height='36'
 					fill='currentColor'
 					className='bi bi-list'
-					viewBox='0 0 20 20'
-					style={{ margin: 'auto 10px' }}
+					viewBox='0 0 17 10'
+					style={{ margin: 'auto 10px', cursor: 'pointer' }}
 					onClick={handleShow}
 				>
 					<path
@@ -60,12 +53,22 @@ const Header = ({
 					/>
 				</svg>
 			</div>
-			<div style={{ display: 'flex', alignContent: 'center' }}>
+			<div
+				style={{
+					display: 'flex',
+					alignContent: 'center',
+					paddingLeft: '50px',
+				}}
+				onMouseEnter={handleMouseEnter}
+				onMouseLeave={handleMouseLeave}
+				onClick={() => (window.location.href = '/')}
+			>
 				<h1
 					style={{
 						textAlign: 'center',
 						margin: 'auto 5px',
 						fontWeight: '900',
+						color: '#120a24',
 					}}
 				>
 					BrainFood
@@ -77,7 +80,7 @@ const Header = ({
 				/>
 			</div>
 
-			<div style={{ display: 'flex', flexDirection:'row-reverse' }}>
+			<div style={{ display: 'flex', flexDirection: 'row-reverse' }}>
 				<LoginModal
 					email={email}
 					setEmail={setEmail}

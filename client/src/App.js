@@ -15,6 +15,7 @@ import Button from 'react-bootstrap/Button';
 import LoginModal from './Components/LoginModal.jsx';
 import RegisterModal from './Components/RegisterModal.jsx';
 import { jwtDecode } from 'jwt-decode';
+import Footer from './Components/Footer.jsx';
 
 export default function App() {
 	// initialize state variables
@@ -30,6 +31,13 @@ export default function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [currentUser, setCurrentUser] = useState('');
 	const [users, setUsers] = useState('');
+
+	useEffect(() => {
+		document.body.classList.add('swirlyBackground');
+		return () => {
+			document.body.classList.remove('swirlyBackground');
+		};
+	}, []);
 
 	// get questions
 	useEffect(() => {
@@ -139,7 +147,7 @@ export default function App() {
 	};
 
 	return (
-		<div id='app'>
+		<div id='app' className='fadeIn'>
 			<div id='header'>
 				<Header
 					handleShow={handleShow}
@@ -166,7 +174,13 @@ export default function App() {
 						isLoggedIn={isLoggedIn}
 					/>
 					<div id='quiz'>
-						<h1 style={{ fontSize: '60px', fontWeight: '900' }}>
+						<h1
+							className='gradientText2'
+							style={{
+								fontSize: '60px',
+								fontWeight: '900',
+							}}
+						>
 							{currentQuiz.topic}
 						</h1>
 					</div>
@@ -178,7 +192,7 @@ export default function App() {
 							marginBottom: '50px',
 						}}
 					>
-						{quizDescription}
+						<h3 style={{ fontWeight: '300' }}>{quizDescription}</h3>
 						<hr />
 					</div>
 
@@ -217,7 +231,7 @@ export default function App() {
 					</div>
 				</main>
 			) : (
-				<main id='main'>
+				<main id='main' className='fadeIn'>
 					<div style={{ height: '100vh', margin: 'auto' }}>
 						<HiddenNav
 							show={show}
@@ -226,19 +240,24 @@ export default function App() {
 							currentQuiz={currentQuiz}
 							setCurrentQuiz={setCurrentQuiz}
 						/>
+						<h1
+							className='gradientText'
+							style={{
+								textAlign: 'center',
+								marginBottom: '40px',
+								marginTop: '20px',
+								fontWeight: '700',
+								fontSize: '80px',
+								backgroundImage:
+									'linearGradient(45deg, #f3ec78, #af4261)',
+								backgroundSize: '100%',
+								backgroundClip: 'text',
+								textFillColor: 'transparent',
+							}}
+						>
+							Welcome to BrainFood!
+						</h1>
 						<div style={{ maxWidth: '800px', margin: 'auto' }}>
-							<h1
-								style={{
-									textAlign: 'center',
-									marginBottom: '40px',
-									marginTop: '20px',
-									fontWeight: '900',
-									fontSize: '50px',
-								}}
-							>
-								Welcome to BrainFood!
-							</h1>
-
 							<hr />
 							<strong>
 								<p style={{ fontSize: '26px', fontWeight: '700' }}>
@@ -250,10 +269,14 @@ export default function App() {
 							<hr />
 
 							<p style={{ fontSize: '26px', fontWeight: '500' }}>
-								BrainFood was built using the PERN stack.
+								BrainFood was built with the PERN stack.
 							</p>
+							<br />
 							<strong>
-								<p style={{ fontSize: '26px', fontWeight: '700' }}>
+								<p
+									className='gradientText'
+									style={{ fontSize: '26px', fontWeight: '700' }}
+								>
 									PostgreSQL, Express, React, and Node.
 								</p>
 							</strong>
@@ -271,10 +294,10 @@ export default function App() {
 							</p>
 							<br />
 							<p style={{ fontSize: '22px', fontWeight: '500' }}>
-								To get started, register an account. This will also
-								log you in. Then simply click the menu icon in the top
-								left corner of your screen, select a quiz topic, and
-								begin!
+								To get started, register an account. When you
+								register, you will also be logged in. Then simply
+								click the menu icon in the top left corner, select a
+								quiz topic, and begin!
 							</p>
 						</div>
 						<br />
@@ -296,8 +319,49 @@ export default function App() {
 								email={email}
 								password={password}
 							/>
-							
 						</div>
+
+						<br />
+						<br />
+						<br />
+						<div
+							style={{
+								maxWidth: '800px',
+								textAlign: 'center',
+								margin: 'auto',
+								paddingBottom: '100px',
+							}}
+						>
+							<hr />
+							<h1
+								className='gradientText'
+								style={{ fontWeight: '700', fontSize: '70px' }}
+							>
+								Coming Updates
+							</h1>
+							<hr />
+							<br />
+							<br />
+							<ol
+								style={{
+									listStyle: 'inside',
+									textAlign: 'left',
+									fontSize: '22px',
+								}}
+							>
+								<li>User progress tracking</li>
+								<li>Progress bars</li>
+								<li>
+									Completion checks next to quiz names in navigation
+								</li>
+
+								<li>Additional questions for each quiz</li>
+							</ol>
+							<br />
+							<br />
+							<br />
+						</div>
+						<Footer />
 					</div>
 				</main>
 			)}
