@@ -1,5 +1,5 @@
 import Accordion from 'react-bootstrap/Accordion';
-import CompareYourAnswer from './Modal';
+import CompareYourAnswer from './AnswerModal';
 import { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 
@@ -18,8 +18,7 @@ function QuestionAccordion({questionText, questionChoices, index}) {
 			<Accordion.Item eventKey='0' className='swirlyBackground2'>
 				<Accordion.Button
 					style={{
-						background: 'rgb(221, 221, 221)',
-						borderColor: '#20022d',
+						background: '#c5acec',
 					}}
 				>
 					<h5

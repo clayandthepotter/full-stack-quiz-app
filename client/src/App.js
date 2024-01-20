@@ -232,7 +232,7 @@ export default function App() {
 				</main>
 			) : (
 				<main id='main' className='fadeIn'>
-					<div style={{ height: '100vh', margin: 'auto' }}>
+					<div style={{ height: '100%', margin: 'auto' }}>
 						<HiddenNav
 							show={show}
 							handleHide={handleHide}
@@ -357,9 +357,6 @@ export default function App() {
 
 								<li>Additional questions for each quiz</li>
 							</ol>
-							<br />
-							<br />
-							<br />
 						</div>
 						<Footer />
 					</div>

@@ -1,39 +1,12 @@
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import database from '../database.js';
-// import CodeEditor from './CodeEditor';
 
-const CompareYourAnswer = ({ choiceSelected, isAnswer, isCorrect }) => {
+const CompareYourAnswer = ({ isAnswer, isCorrect }) => {
 	const [show, setShow] = useState(false);
 
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
-
-	// const handleContinue = () => {
-	// 	// Close modal
-	// 	setShow(false);
-
-	// 	// Get index of current question
-	// 	const currentIndex = quizQuestions.findIndex(
-	// 		(q) => q.id === currentQuestion.id
-	// 	);
-
-	// 	// Close current accordion
-	// 	const currentAccordion = document.getElementById(
-	// 		`accordion-${currentIndex}`
-	// 	);
-	// 	currentAccordion.classList.remove('show');
-
-	// 	// Open next accordion
-	// 	const nextIndex = currentIndex + 1;
-	// 	if (nextIndex < quizQuestions.length) {
-	// 		const nextAccordion = document.getElementById(
-	// 			`accordion-${nextIndex}`
-	// 		);
-	// 		nextAccordion.classList.add('show');
-	// 	}
-	// };
 
 	return (
 		<>

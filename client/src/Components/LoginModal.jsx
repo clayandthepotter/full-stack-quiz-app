@@ -43,7 +43,7 @@ const LoginModal = ({
 				setToken(data.token);
 				// console.log(`data.token`, data.token);
 				setCurrentUser(data.username);
-				// console.log(`currentUser`, currentUser)
+				// console.log(`c)urrentUser`, currentUser)
 				setIsLoggedIn((prevIsLoggedIn) => !prevIsLoggedIn);
 				// console.log(`isLoggedIn`, isLoggedIn);
 				alert('Login Successful!\n\nWelcome back '+data.username);
@@ -72,6 +72,16 @@ const LoginModal = ({
 		alert('Logout successful!');
 	};
 
+	const handleEnterKeyPress = async (e) => {
+		try {
+			if (e.key === 'Enter') {
+				handleLogin();
+			}
+		} catch (error) {
+			alert(error)
+		}
+	}
+
 	// console.log(`currentUser`, currentUser);
 	return (
 		<>
@@ -81,7 +91,7 @@ const LoginModal = ({
 						Login
 					</Button>
 					<Modal show={show} onHide={handleClose}>
-						<Modal.Header closeButton style={{background: '#fff'}} >
+						<Modal.Header closeButton style={{ background: '#fff' }}>
 							<Modal.Title style={{ textAlign: 'center' }}>
 								Login
 							</Modal.Title>
@@ -95,9 +105,10 @@ const LoginModal = ({
 												'inset 0px 2px 5px rgba(0, 0, 0, 0.1)',
 										}}
 										type='email'
-										placeholder='name@example.com'
+										placeholder='email@example.com'
 										autoComplete='email'
 										onChange={(e) => setEmail(e.target.value)}
+										onKeyDown={(e) => handleEnterKeyPress(e)}
 									/>
 								</InputGroup>
 								<InputGroup className='mb-3'>
@@ -110,8 +121,10 @@ const LoginModal = ({
 										placeholder='Password'
 										autoComplete='current-password'
 										onChange={(e) => setPassword(e.target.value)}
+										onKeyDown={(e) => handleEnterKeyPress(e)}
 									/>
-									<Button variant='secondary'
+									<Button
+										variant='secondary'
 										onClick={() => setShowPassword(!showPassword)}
 									>
 										{showPassword === false ? 'Show' : 'Hide'}
@@ -127,14 +140,9 @@ const LoginModal = ({
 					</Modal>
 				</>
 			) : (
-				
-					<Button
-						variant='secondary'
-						onClick={() => handleLogOut()}
-					>
-						Log Out
-					</Button>
-				
+				<Button variant='secondary' onClick={() => handleLogOut()}>
+					Log Out
+				</Button>
 			)}
 		</>
 	);
